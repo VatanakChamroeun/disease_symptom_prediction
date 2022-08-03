@@ -55,9 +55,9 @@ class TeamMemberScreen extends StatelessWidget {
   List<String>? memberNames = ['Vatanak', 'Sophanon', 'Manuth', 'Sovichea'];
 
   List<String>? memberPictures = [
-    'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-    'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-    'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-    'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
+    'https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png',
+    'https://i0.wp.com/www.cssscript.com/wp-content/uploads/2020/12/Customizable-SVG-Avatar-Generator-In-JavaScript-Avataaars.js.png?fit=438%2C408&ssl=1',
+    'https://img.ibxk.com.br/2017/12/26/26113640402098.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6DV--0QFWZYJ0vYl2vInKkgz6X8LCDeldzUi8WM3MnKQ837ov9guuSEiNP2xpgRqMR4I&usqp=CAU',
   ];
 }

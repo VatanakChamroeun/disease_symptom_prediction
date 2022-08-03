@@ -42,7 +42,16 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
   }
 
   Widget buildAddSymptomButton(BuildContext context) {
-    return Container();
+    return Container(
+      child: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            symptomController.clear();
+          });
+        },
+        child: Text('Clear Data'),
+      ),
+    );
   }
 
   Widget buildInputSymptom(BuildContext context) {
@@ -59,7 +68,7 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
                   Text("Symptom ${index + 1}"),
                 ],
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 15),
               Column(
                 children: [
                   SizedBox(
@@ -85,25 +94,23 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
   }
 
   Widget buildPredictButton(BuildContext context) {
-    return FutureBuilder(
-      builder: (context, snapshot) {
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: Container(
-            width: 100,
-            height: 50,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-            child: ElevatedButton(
-              onPressed: () async {
-                // await postRequest();
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Container(
+        width: 100,
+        height: 50,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        child: ElevatedButton(
+          onPressed: () async {
+            await postRequest();
 
-                // showResult(content: "Hello");
-              },
-              child: const Text('Predict'),
-            ),
-          ),
-        );
-      },
+            // await Api.get('severity');
+
+            showResult();
+          },
+          child: const Text('Predict'),
+        ),
+      ),
     );
   }
 
@@ -120,7 +127,7 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
     );
   }
 
-  showResult({required String? content}) {
+  showResult({String? content}) {
     Widget okButton = TextButton(
       child: const Text("CLOSE"),
       onPressed: () {
@@ -130,18 +137,35 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Predict Result", textAlign: TextAlign.center),
-          content: Text(
-            content!,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          actions: [
-            okButton,
-          ],
+        return FutureBuilder(
+          future: postRequest(),
+          builder: (context, snapshot) {
+            print("${snapshot.data}");
+            if (snapshot.hasData) {
+              return AlertDialog(
+                title: const Text("Predict Result", textAlign: TextAlign.center),
+                content: Text(
+                  '',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                actions: [
+                  okButton,
+                ],
+              );
+            }
+            return buildLoading();
+          },
         );
       },
+    );
+  }
+
+  Widget buildLoading() {
+    return Container(
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
