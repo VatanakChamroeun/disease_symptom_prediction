@@ -1,17 +1,18 @@
 import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/severity_list.dart';
 import 'package:frontend/team_member_screen.dart';
 
-class DeceasePredictionScreen extends StatefulWidget {
-  const DeceasePredictionScreen({Key? key}) : super(key: key);
+class DiseasePredictionScreen extends StatefulWidget {
+  const DiseasePredictionScreen({Key? key}) : super(key: key);
 
   @override
-  State<DeceasePredictionScreen> createState() => _DeceasePredictionScreenState();
+  State<DiseasePredictionScreen> createState() => _DiseasePredictionScreenState();
 }
 
-class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
+class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
   int? symptomLength = 5;
   List<DropdownEditingController<String>?> symptomController = [
     DropdownEditingController<String>(),
@@ -27,11 +28,19 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Disease Symptom Prediction'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.dark_mode),
+            onPressed: () {
+              App.of(context)?.toggleTheme();
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildAddSymptomButton(context),
+            // buildAddSymptomButton(context),
             buildInputSymptom(context),
             buildPredictButton(context),
             TeamMemberScreen(),
@@ -42,15 +51,13 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
   }
 
   Widget buildAddSymptomButton(BuildContext context) {
-    return Container(
-      child: ElevatedButton(
-        onPressed: () {
-          setState(() {
-            symptomController.clear();
-          });
-        },
-        child: Text('Clear Data'),
-      ),
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          symptomController.clear();
+        });
+      },
+      child: const Text('Clear Data'),
     );
   }
 
@@ -59,7 +66,7 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: List.generate(symptomLength!, (index) {
         return Container(
-          padding: const EdgeInsets.only(bottom: 20, top: 15),
+          padding: const EdgeInsets.only(bottom: 20, top: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -77,11 +84,15 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
                       controller: symptomController[index],
                       options: severity,
                       decoration: InputDecoration(
+                        // filled: true,
+                        // fillColor: Colors.white.withOpacity(0.4),
                         border: const OutlineInputBorder(),
                         suffixIcon: const Icon(Icons.arrow_drop_down),
-                        label: Text('Symptom ${index + 1}'),
+                        label: Text(
+                          'Symptom ${index + 1}',
+                        ),
                       ),
-                      dropdownHeight: 120,
+                      dropdownHeight: 150,
                     ),
                   ),
                 ],
@@ -102,8 +113,6 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: ElevatedButton(
           onPressed: () async {
-            await postRequest();
-
             // await Api.get('severity');
 
             showResult();
@@ -114,8 +123,8 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
     );
   }
 
-  postRequest() async {
-    await Api.post(
+  Future<Map> postRequest() async {
+    return await Api.post(
       '/api/predict',
       {
         "Symptom_1": symptomController[0]?.value,
@@ -127,7 +136,7 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
     );
   }
 
-  showResult({String? content}) {
+  void showResult({String? content}) {
     Widget okButton = TextButton(
       child: const Text("CLOSE"),
       onPressed: () {
@@ -137,17 +146,20 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FutureBuilder(
+        return FutureBuilder<Map>(
           future: postRequest(),
           builder: (context, snapshot) {
-            print("${snapshot.data}");
             if (snapshot.hasData) {
               return AlertDialog(
-                title: const Text("Predict Result", textAlign: TextAlign.center),
-                content: Text(
-                  '',
+                title: Text(
+                  "Predict Result",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                content: Text(
+                  snapshot.data?['message'],
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 actions: [
                   okButton,
@@ -162,10 +174,8 @@ class _DeceasePredictionScreenState extends State<DeceasePredictionScreen> {
   }
 
   Widget buildLoading() {
-    return Container(
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 }
