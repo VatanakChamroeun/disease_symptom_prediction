@@ -9,7 +9,7 @@ class TeamMemberScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 30, bottom: 30),
-      color: Colors.grey[200],
+      color: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
           buildTitle(context),
