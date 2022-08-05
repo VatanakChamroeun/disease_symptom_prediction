@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'package:frontend/model/predict_model.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
   // static String host = 'reqbin.com';
   static String host = 'ml-term9-disease-prediction.herokuapp.com';
 
-  static Future<Map> post(String path, Map body) async {
+  static Future<PredictModel> post(String path, Map body) async {
     http.Response response = await http.post(
       Uri(
         host: host,
@@ -21,10 +21,10 @@ class Api {
       body: jsonEncode(body),
     );
 
-    var result = jsonDecode(response.body);
+    var result = PredictModel.fromJson(jsonDecode(response.body));
+    // var result = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      print(result['message']);
       return result;
     } else {
       throw Exception('Failed to load data');
@@ -42,7 +42,6 @@ class Api {
 
     var result = response.body;
 
-    inspect(result);
     print('result $result');
 
     return result;
