@@ -2,6 +2,7 @@ import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api.dart';
 import 'package:frontend/main.dart';
+import 'package:frontend/model/predict_model.dart';
 import 'package:frontend/severity_list.dart';
 import 'package:frontend/team_member_screen.dart';
 
@@ -123,7 +124,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
     );
   }
 
-  Future<Map> postRequest() async {
+  Future<PredictModel> postRequest() async {
     return await Api.post(
       '/api/predict',
       {
@@ -151,7 +152,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FutureBuilder<Map>(
+        return FutureBuilder<PredictModel>(
           future: postRequest(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -161,10 +162,32 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                content: Text(
-                  snapshot.data?['message'],
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineLarge,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      snapshot.data!.message!,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 20, bottom: 10),
+                      child: Text(
+                        'Precaution',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(snapshot.data!.precaution!.length, (index) {
+                        return Container(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text('• ${snapshot.data!.precaution![index]}'),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
                 actions: [
                   okButton,
