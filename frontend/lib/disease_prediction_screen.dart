@@ -136,6 +136,11 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
     );
   }
 
+  Future getRequest() async {
+    print('hello');
+    return await Api.get('/api/severity');
+  }
+
   void showResult({String? content}) {
     Widget okButton = TextButton(
       child: const Text("CLOSE"),

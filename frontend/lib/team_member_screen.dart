@@ -23,7 +23,7 @@ class TeamMemberScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const [
-        Text('Made with ☕ by Group 4'),
+        Text('Made with ☕ by Group 2'),
       ],
     );
   }
