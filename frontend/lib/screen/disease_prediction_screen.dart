@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/api.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/predict_model.dart';
+import 'package:frontend/screen/heart_prediction_screen.dart';
 import 'package:frontend/severity_list.dart';
 import 'package:frontend/screen/team_member_screen.dart';
 
@@ -10,7 +11,8 @@ class DiseasePredictionScreen extends StatefulWidget {
   const DiseasePredictionScreen({Key? key}) : super(key: key);
 
   @override
-  State<DiseasePredictionScreen> createState() => _DiseasePredictionScreenState();
+  State<DiseasePredictionScreen> createState() =>
+      _DiseasePredictionScreenState();
 }
 
 class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
@@ -124,6 +126,26 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
     );
   }
 
+  Widget buildPredictHeartDiseaseButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Container(
+        width: 200,
+        height: 50,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        child: ElevatedButton(
+          onPressed: () async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const HeartPredictionScreen()));
+          },
+          child: const Text('Predict Heart Attack'),
+        ),
+      ),
+    );
+  }
+
   Future<PredictModel> postRequest() async {
     return await Api.post(
       '/api/predict',
@@ -138,7 +160,6 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
   }
 
   Future getRequest() async {
-    print('hello');
     return await Api.get('/api/severity');
   }
 
@@ -180,7 +201,8 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(snapshot.data!.precaution!.length, (index) {
+                      children: List.generate(snapshot.data!.precaution!.length,
+                          (index) {
                         return Container(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
@@ -190,6 +212,9 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                         );
                       }),
                     ),
+                    snapshot.data!.hasHeartDisease!
+                        ? buildPredictHeartDiseaseButton(context)
+                        : Container(),
                   ],
                 ),
                 actions: [
