@@ -3,6 +3,7 @@ class PredictModel {
   List<String>? precaution;
   bool? hasDiabetes;
   bool? hasHeartDisease;
+  bool? hasTuberCulosis;
 
   PredictModel({this.message, this.precaution, this.hasDiabetes, this.hasHeartDisease});
 
@@ -11,5 +12,6 @@ class PredictModel {
     precaution = json['precaution'].cast<String>();
     hasDiabetes = json['has_diabetes'];
     hasHeartDisease = json['has_heart_disease'];
+    hasTuberCulosis = json['has_tuberculosis'];
   }
 }
