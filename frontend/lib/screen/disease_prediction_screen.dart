@@ -6,13 +6,14 @@ import 'package:frontend/model/predict_model.dart';
 import 'package:frontend/screen/heart_prediction_screen.dart';
 import 'package:frontend/severity_list.dart';
 import 'package:frontend/screen/team_member_screen.dart';
+import 'package:frontend/widget/error_snackbar_widget.dart';
+import 'package:frontend/widget/loading_widget.dart';
 
 class DiseasePredictionScreen extends StatefulWidget {
   const DiseasePredictionScreen({Key? key}) : super(key: key);
 
   @override
-  State<DiseasePredictionScreen> createState() =>
-      _DiseasePredictionScreenState();
+  State<DiseasePredictionScreen> createState() => _DiseasePredictionScreenState();
 }
 
 class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
@@ -117,8 +118,11 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
         child: ElevatedButton(
           onPressed: () async {
             // await Api.get('severity');
-
-            showResult();
+            if (symptomController[0]?.value != null) {
+              showResult();
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
+            }
           },
           child: const Text('Predict'),
         ),
@@ -135,10 +139,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: ElevatedButton(
           onPressed: () async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => const HeartPredictionScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const HeartPredictionScreen()));
           },
           child: const Text('Predict Heart Attack'),
         ),
@@ -201,8 +202,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(snapshot.data!.precaution!.length,
-                          (index) {
+                      children: List.generate(snapshot.data!.precaution!.length, (index) {
                         return Container(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
@@ -212,9 +212,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                         );
                       }),
                     ),
-                    snapshot.data!.hasHeartDisease!
-                        ? buildPredictHeartDiseaseButton(context)
-                        : Container(),
+                    snapshot.data!.hasHeartDisease! ? buildPredictHeartDiseaseButton(context) : Container(),
                   ],
                 ),
                 actions: [
@@ -222,16 +220,11 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                 ],
               );
             }
-            return buildLoading();
+
+            return const LoadingWidget();
           },
         );
       },
-    );
-  }
-
-  Widget buildLoading() {
-    return const Center(
-      child: CircularProgressIndicator(),
     );
   }
 }

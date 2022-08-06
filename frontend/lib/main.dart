@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screen/disease_prediction_screen.dart';
-import 'package:frontend/screen/heart_prediction_screen.dart';
 
 void main() {
   runApp(const App());
@@ -23,8 +22,7 @@ class _AppState extends State<App> {
 
   void toggleTheme() {
     setState(() {
-      themeMode =
-          themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+      themeMode = themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     });
   }
 

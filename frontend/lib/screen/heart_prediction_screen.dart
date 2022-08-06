@@ -1,10 +1,12 @@
 import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/api/api.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/predict_model.dart';
-import 'package:frontend/severity_list.dart';
 import 'package:frontend/screen/team_member_screen.dart';
+import 'package:frontend/widget/error_snackbar_widget.dart';
+import 'package:frontend/widget/loading_widget.dart';
 
 class HeartPredictionScreen extends StatefulWidget {
   const HeartPredictionScreen({Key? key}) : super(key: key);
@@ -20,16 +22,27 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
   TextEditingController trestbpsController = TextEditingController();
   TextEditingController cholController = TextEditingController();
   DropdownEditingController<String> fbsController = DropdownEditingController();
-  DropdownEditingController<String> restecgController =
-      DropdownEditingController();
+  DropdownEditingController<String> restecgController = DropdownEditingController();
   TextEditingController thalachController = TextEditingController();
-  DropdownEditingController<String> exangController =
-      DropdownEditingController();
+  DropdownEditingController<String> exangController = DropdownEditingController();
   TextEditingController oldpeakController = TextEditingController();
   TextEditingController slopeController = TextEditingController();
   DropdownEditingController<String> caController = DropdownEditingController();
-  DropdownEditingController<String> thalController =
-      DropdownEditingController();
+  DropdownEditingController<String> thalController = DropdownEditingController();
+
+  late String? age = ageController.text;
+  late String? sex = sexController.value;
+  late String? cp = cpController.value;
+  late String? trestbps = trestbpsController.text;
+  late String? chol = cholController.text;
+  late String? fbs = fbsController.value;
+  late String? restecg = restecgController.value;
+  late String? thalach = thalachController.text;
+  late String? exang = exangController.value;
+  late String? oldpeak = oldpeakController.text;
+  late String? slope = slopeController.text;
+  late String? ca = caController.value;
+  late String? thal = thalController.value;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +59,7 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
           ),
         ],
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -56,21 +69,11 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
         child: Column(
           children: [
             buildInputSymptom(context),
-            // buildAddSymptomButton(context),
             buildPredictButton(context),
             TeamMemberScreen(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget buildAddSymptomButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {});
-      },
-      child: const Text('Clear Data'),
     );
   }
 
@@ -96,331 +99,121 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
   }
 
   Widget buildAgeInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Age"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextField(
-                      controller: ageController,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildTextInput(
+      context,
+      title: 'Age',
+      controller: ageController,
     );
   }
 
   Widget buildGenderInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Gender"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Male', 'Female'],
-                      controller: sexController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildDropdownInput(
+      context,
+      title: 'Gender',
+      controller: sexController,
+      dropdownData: ['Male', 'Female'],
     );
   }
 
   Widget buildCpInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Chest pain type"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const [
-                        'Pain 0%',
-                        'Pain 25%',
-                        'Pain 50%',
-                        'Pain 75%'
-                      ],
-                      controller: cpController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildDropdownInput(
+      context,
+      title: 'Chest pain type',
+      controller: cpController,
+      dropdownData: ['Pain 0%', 'Pain 25%', 'Pain 50%', 'Pain 75%'],
     );
   }
 
   Widget buildTrestbpsInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Resting blood pressure"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextField(
-                      controller: trestbpsController,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildTextInput(
+      context,
+      title: 'Resting blood pressure',
+      controller: trestbpsController,
     );
   }
 
   Widget buildCholInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Serum cholestoral in mg/dl"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextField(
-                      controller: cholController,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildTextInput(
+      context,
+      title: 'Serum cholestoral in mg/dl',
+      controller: cholController,
     );
   }
 
   Widget buildFbsInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Fasting blood sugar > 120 mg/dl"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: fbsController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildDropdownInput(
+      context,
+      title: 'Fasting blood sugar > 120 mg/dl',
+      controller: fbsController,
+      dropdownData: ['Yes', 'No'],
     );
   }
 
   Widget buildRestecgInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Resting electrocardiographic results"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Normal', 'Having ST-T', 'Hypertrophy'],
-                      controller: restecgController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildDropdownInput(
+      context,
+      title: 'Resting electrocardiographic results',
+      controller: restecgController,
+      dropdownData: ['Normal', 'Having ST-T', 'Hypertrophy'],
     );
   }
 
   Widget buildThalachInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Maximum heart rate achieved"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextField(
-                      controller: thalachController,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildTextInput(
+      context,
+      title: 'Maximum heart rate achieved',
+      controller: thalachController,
     );
   }
 
   Widget buildExangInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Exercise induced angina"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: exangController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildDropdownInput(
+      context,
+      title: 'Exercise induced angina',
+      controller: exangController,
+      dropdownData: ['Yes', 'No'],
     );
   }
 
   Widget buildOldpeakInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("ST depression induced by exercise relative to rest"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextField(
-                      controller: oldpeakController,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return buildTextInput(
+      context,
+      title: 'ST depression induced by exercise relative to rest',
+      controller: oldpeakController,
     );
   }
 
   Widget buildSlopeInputBox(BuildContext context) {
+    return buildTextInput(
+      context,
+      title: 'The slope of the peak exercise ST segment',
+      controller: slopeController,
+    );
+  }
+
+  Widget buildCaInputBox(BuildContext context) {
+    return buildDropdownInput(
+      context,
+      title: 'Number of major vessels colored by flourosopy',
+      controller: caController,
+      dropdownData: ['0', '1', '2', '3'],
+    );
+  }
+
+  Widget buildThalInputBox(BuildContext context) {
+    return buildDropdownInput(
+      context,
+      title: 'Thalassemia',
+      controller: thalController,
+      dropdownData: ['Normal', 'Fixed defect', 'Reversable defect'],
+    );
+  }
+
+  Widget buildTextInput(
+    BuildContext context, {
+    required String? title,
+    required TextEditingController? controller,
+  }) {
     return Container(
       padding: const EdgeInsets.only(bottom: 20, top: 20),
       child: Row(
@@ -429,8 +222,8 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
           Column(
             children: [
               Column(
-                children: const [
-                  Text("The slope of the peak exercise ST segment"),
+                children: [
+                  Text(title!),
                 ],
               ),
               const SizedBox(width: 15),
@@ -439,76 +232,47 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
                   SizedBox(
                     width: 250,
                     child: TextField(
-                      controller: slopeController,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildCaInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Number of major vessels colored by flourosopy"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['0', '1', '2', '3'],
-                      controller: caController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildThalInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Thalassemia"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const [
-                        'Normal',
-                        'Fixed defect',
-                        'Reversable defect'
+                      controller: controller,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
                       ],
-                      controller: thalController,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildDropdownInput(
+    BuildContext context, {
+    required String? title,
+    required DropdownEditingController<String>? controller,
+    required List<String>? dropdownData,
+  }) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 20, top: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            children: [
+              Column(
+                children: [
+                  Text(title!),
+                ],
+              ),
+              const SizedBox(width: 15),
+              Column(
+                children: [
+                  SizedBox(
+                    width: 250,
+                    child: TextDropdownFormField(
+                      options: dropdownData!,
+                      controller: controller,
                     ),
                   ),
                 ],
@@ -531,19 +295,7 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
           onPressed: () async {
             // await Api.get('severity');
             // showResult();
-            var age = ageController.text;
-            var sex = sexController.value;
-            var cp = cpController.value;
-            var trestbps = trestbpsController.text;
-            var chol = cholController.text;
-            var fbs = fbsController.value;
-            var restecg = restecgController.value;
-            var thalach = thalachController.text;
-            var exang = exangController.value;
-            var oldpeak = oldpeakController.text;
-            var slope = slopeController.text;
-            var ca = caController.value;
-            var thal = thalController.value;
+
             if (age != "" &&
                 sex != null &&
                 cp != null &&
@@ -559,11 +311,7 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
                 thal != "") {
               showResult();
             } else {
-              const snackBar = SnackBar(
-                content: Text("Please input all the value."),
-                backgroundColor: Colors.redAccent,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
             }
           },
           child: const Text('Predict'),
@@ -581,8 +329,6 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: ElevatedButton(
           onPressed: () async {
-            // await Api.get('severity');
-
             showResult();
           },
           child: const Text('Predict Heart Attack'),
@@ -592,19 +338,6 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
   }
 
   Future<PredictModel> postRequest() async {
-    var age = ageController.text;
-    var sex = sexController.value;
-    var cp = cpController.value;
-    var trestbps = trestbpsController.text;
-    var chol = cholController.text;
-    var fbs = fbsController.value;
-    var restecg = restecgController.value;
-    var thalach = thalachController.text;
-    var exang = exangController.value;
-    var oldpeak = oldpeakController.text;
-    var slope = slopeController.text;
-    var ca = caController.value;
-    var thal = thalController.value;
     int cpValue = 0;
     if (cp == "Pain 75%") {
       cpValue = 3;
@@ -646,14 +379,11 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
       "ca": ca,
       "thal": thalValue
     };
+
     return await Api.postHeartDisease('/api/predict', data);
   }
 
-  Future getRequest() async {
-    return await Api.get('/api/severity');
-  }
-
-  void showResult({String? content}) {
+  void showResult() {
     Widget okButton = TextButton(
       child: const Text("CLOSE"),
       onPressed: () {
@@ -689,16 +419,10 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
                 ],
               );
             }
-            return buildLoading();
+            return const LoadingWidget();
           },
         );
       },
-    );
-  }
-
-  Widget buildLoading() {
-    return const Center(
-      child: CircularProgressIndicator(),
     );
   }
 }

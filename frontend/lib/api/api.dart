@@ -66,7 +66,7 @@ class Api {
 
     var result = response.body;
 
-    print('result $result');
+    // print('result $result');
 
     return result;
   }
