@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/api.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/predict_model.dart';
+import 'package:frontend/screen/covid_prediction_screen.dart';
 import 'package:frontend/screen/heart_prediction_screen.dart';
 import 'package:frontend/severity_list.dart';
 import 'package:frontend/screen/team_member_screen.dart';
@@ -13,12 +14,23 @@ class DiseasePredictionScreen extends StatefulWidget {
   const DiseasePredictionScreen({Key? key}) : super(key: key);
 
   @override
-  State<DiseasePredictionScreen> createState() => _DiseasePredictionScreenState();
+  State<DiseasePredictionScreen> createState() =>
+      _DiseasePredictionScreenState();
 }
 
 class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
-  int? symptomLength = 5;
+  int? symptomLength = 15;
   List<DropdownEditingController<String>?> symptomController = [
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
+    DropdownEditingController<String>(),
     DropdownEditingController<String>(),
     DropdownEditingController<String>(),
     DropdownEditingController<String>(),
@@ -139,9 +151,32 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: ElevatedButton(
           onPressed: () async {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const HeartPredictionScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const HeartPredictionScreen()));
           },
           child: const Text('Predict Heart Attack'),
+        ),
+      ),
+    );
+  }
+
+  Widget buildPredictCovidButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Container(
+        width: 200,
+        height: 50,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        child: ElevatedButton(
+          onPressed: () async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const CovidPredictionScreen()));
+          },
+          child: const Text('Predict Covid'),
         ),
       ),
     );
@@ -156,6 +191,16 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
         "Symptom_3": symptomController[2]?.value,
         "Symptom_4": symptomController[3]?.value,
         "Symptom_5": symptomController[4]?.value,
+        "Symptom_6": symptomController[5]?.value,
+        "Symptom_7": symptomController[6]?.value,
+        "Symptom_8": symptomController[7]?.value,
+        "Symptom_9": symptomController[8]?.value,
+        "Symptom_10": symptomController[9]?.value,
+        "Symptom_11": symptomController[10]?.value,
+        "Symptom_12": symptomController[11]?.value,
+        "Symptom_13": symptomController[12]?.value,
+        "Symptom_14": symptomController[13]?.value,
+        "Symptom_15": symptomController[14]?.value,
       },
     );
   }
@@ -202,7 +247,8 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(snapshot.data!.precaution!.length, (index) {
+                      children: List.generate(snapshot.data!.precaution!.length,
+                          (index) {
                         return Container(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
@@ -212,7 +258,12 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                         );
                       }),
                     ),
-                    snapshot.data!.hasHeartDisease! ? buildPredictHeartDiseaseButton(context) : Container(),
+                    snapshot.data!.hasHeartDisease!
+                        ? buildPredictHeartDiseaseButton(context)
+                        : Container(),
+                    snapshot.data!.hasTuberCulosis!
+                        ? buildPredictCovidButton(context)
+                        : Container(),
                   ],
                 ),
                 actions: [
