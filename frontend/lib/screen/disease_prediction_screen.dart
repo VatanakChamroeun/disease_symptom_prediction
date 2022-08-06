@@ -1,10 +1,10 @@
 import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/api.dart';
+import 'package:frontend/api/api.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/predict_model.dart';
 import 'package:frontend/severity_list.dart';
-import 'package:frontend/team_member_screen.dart';
+import 'package:frontend/screen/team_member_screen.dart';
 
 class DiseasePredictionScreen extends StatefulWidget {
   const DiseasePredictionScreen({Key? key}) : super(key: key);
@@ -160,7 +160,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                 title: Text(
                   "Predict Result",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -172,10 +172,10 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
                     Container(
-                      padding: const EdgeInsets.only(top: 20, bottom: 10),
+                      padding: const EdgeInsets.only(top: 20, bottom: 20),
                       child: Text(
                         'Precaution',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
                     Column(
@@ -183,7 +183,10 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                       children: List.generate(snapshot.data!.precaution!.length, (index) {
                         return Container(
                           padding: const EdgeInsets.only(bottom: 10),
-                          child: Text('• ${snapshot.data!.precaution![index]}'),
+                          child: Text(
+                            '• ${snapshot.data!.precaution![index]}',
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
                         );
                       }),
                     ),

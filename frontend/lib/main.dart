@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/disease_prediction_screen.dart';
+import 'package:frontend/screen/disease_prediction_screen.dart';
 
 void main() {
   runApp(const App());
