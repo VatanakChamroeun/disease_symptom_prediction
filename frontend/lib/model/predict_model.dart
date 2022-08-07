@@ -5,7 +5,13 @@ class PredictModel {
   bool? hasHeartDisease;
   bool? hasTuberCulosis;
 
-  PredictModel({this.message, this.precaution, this.hasDiabetes, this.hasHeartDisease});
+  PredictModel({
+    this.message,
+    this.precaution,
+    this.hasDiabetes,
+    this.hasHeartDisease,
+    this.hasTuberCulosis,
+  });
 
   PredictModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];

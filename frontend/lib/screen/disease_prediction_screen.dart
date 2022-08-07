@@ -14,8 +14,7 @@ class DiseasePredictionScreen extends StatefulWidget {
   const DiseasePredictionScreen({Key? key}) : super(key: key);
 
   @override
-  State<DiseasePredictionScreen> createState() =>
-      _DiseasePredictionScreenState();
+  State<DiseasePredictionScreen> createState() => _DiseasePredictionScreenState();
 }
 
 class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
@@ -151,10 +150,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: ElevatedButton(
           onPressed: () async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => const HeartPredictionScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const HeartPredictionScreen()));
           },
           child: const Text('Predict Heart Attack'),
         ),
@@ -171,10 +167,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: ElevatedButton(
           onPressed: () async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => const CovidPredictionScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const CovidPredictionScreen()));
           },
           child: const Text('Predict Covid'),
         ),
@@ -183,26 +176,25 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
   }
 
   Future<PredictModel> postRequest() async {
-    return await Api.post(
-      '/api/predict',
-      {
-        "Symptom_1": symptomController[0]?.value,
-        "Symptom_2": symptomController[1]?.value,
-        "Symptom_3": symptomController[2]?.value,
-        "Symptom_4": symptomController[3]?.value,
-        "Symptom_5": symptomController[4]?.value,
-        "Symptom_6": symptomController[5]?.value,
-        "Symptom_7": symptomController[6]?.value,
-        "Symptom_8": symptomController[7]?.value,
-        "Symptom_9": symptomController[8]?.value,
-        "Symptom_10": symptomController[9]?.value,
-        "Symptom_11": symptomController[10]?.value,
-        "Symptom_12": symptomController[11]?.value,
-        "Symptom_13": symptomController[12]?.value,
-        "Symptom_14": symptomController[13]?.value,
-        "Symptom_15": symptomController[14]?.value,
-      },
-    );
+    var postData = {
+      "Symptom_1": symptomController[0]?.value,
+      "Symptom_2": symptomController[1]?.value,
+      "Symptom_3": symptomController[2]?.value,
+      "Symptom_4": symptomController[3]?.value,
+      "Symptom_5": symptomController[4]?.value,
+      "Symptom_6": symptomController[5]?.value,
+      "Symptom_7": symptomController[6]?.value,
+      "Symptom_8": symptomController[7]?.value,
+      "Symptom_9": symptomController[8]?.value,
+      "Symptom_10": symptomController[9]?.value,
+      "Symptom_11": symptomController[10]?.value,
+      "Symptom_12": symptomController[11]?.value,
+      "Symptom_13": symptomController[12]?.value,
+      "Symptom_14": symptomController[13]?.value,
+      "Symptom_15": symptomController[14]?.value,
+    };
+
+    return await Api.post('/api/predict', postData);
   }
 
   Future getRequest() async {
@@ -247,8 +239,7 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(snapshot.data!.precaution!.length,
-                          (index) {
+                      children: List.generate(snapshot.data!.precaution!.length, (index) {
                         return Container(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
@@ -258,12 +249,8 @@ class _DiseasePredictionScreenState extends State<DiseasePredictionScreen> {
                         );
                       }),
                     ),
-                    snapshot.data!.hasHeartDisease!
-                        ? buildPredictHeartDiseaseButton(context)
-                        : Container(),
-                    snapshot.data!.hasTuberCulosis!
-                        ? buildPredictCovidButton(context)
-                        : Container(),
+                    snapshot.data!.hasHeartDisease! ? buildPredictHeartDiseaseButton(context) : Container(),
+                    snapshot.data!.hasTuberCulosis! ? buildPredictCovidButton(context) : Container(),
                   ],
                 ),
                 actions: [

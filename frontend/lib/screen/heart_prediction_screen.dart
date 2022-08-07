@@ -1,12 +1,13 @@
 import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:frontend/api/api.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/predict_model.dart';
 import 'package:frontend/screen/team_member_screen.dart';
+import 'package:frontend/widget/dropdown_input_widget.dart';
 import 'package:frontend/widget/error_snackbar_widget.dart';
 import 'package:frontend/widget/loading_widget.dart';
+import 'package:frontend/widget/text_input_widget.dart';
 
 class HeartPredictionScreen extends StatefulWidget {
   const HeartPredictionScreen({Key? key}) : super(key: key);
@@ -99,188 +100,100 @@ class _HeartPredictionScreenState extends State<HeartPredictionScreen> {
   }
 
   Widget buildAgeInputBox(BuildContext context) {
-    return buildTextInput(
-      context,
+    return TextInputWidget(
       title: 'Age',
       controller: ageController,
     );
   }
 
   Widget buildGenderInputBox(BuildContext context) {
-    return buildDropdownInput(
-      context,
+    return DropdownInputWidget(
       title: 'Gender',
       controller: sexController,
-      dropdownData: ['Male', 'Female'],
+      dropdownData: const ['Male', 'Female'],
     );
   }
 
   Widget buildCpInputBox(BuildContext context) {
-    return buildDropdownInput(
-      context,
+    return DropdownInputWidget(
       title: 'Chest pain type',
       controller: cpController,
-      dropdownData: ['Pain 0%', 'Pain 25%', 'Pain 50%', 'Pain 75%'],
+      dropdownData: const ['Pain 0%', 'Pain 25%', 'Pain 50%', 'Pain 75%'],
     );
   }
 
   Widget buildTrestbpsInputBox(BuildContext context) {
-    return buildTextInput(
-      context,
+    return TextInputWidget(
       title: 'Resting blood pressure',
       controller: trestbpsController,
     );
   }
 
   Widget buildCholInputBox(BuildContext context) {
-    return buildTextInput(
-      context,
+    return TextInputWidget(
       title: 'Serum cholestoral in mg/dl',
       controller: cholController,
     );
   }
 
   Widget buildFbsInputBox(BuildContext context) {
-    return buildDropdownInput(
-      context,
+    return DropdownInputWidget(
       title: 'Fasting blood sugar > 120 mg/dl',
       controller: fbsController,
-      dropdownData: ['Yes', 'No'],
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildRestecgInputBox(BuildContext context) {
-    return buildDropdownInput(
-      context,
+    return DropdownInputWidget(
       title: 'Resting electrocardiographic results',
       controller: restecgController,
-      dropdownData: ['Normal', 'Having ST-T', 'Hypertrophy'],
+      dropdownData: const ['Normal', 'Having ST-T', 'Hypertrophy'],
     );
   }
 
   Widget buildThalachInputBox(BuildContext context) {
-    return buildTextInput(
-      context,
+    return TextInputWidget(
       title: 'Maximum heart rate achieved',
       controller: thalachController,
     );
   }
 
   Widget buildExangInputBox(BuildContext context) {
-    return buildDropdownInput(
-      context,
+    return DropdownInputWidget(
       title: 'Exercise induced angina',
       controller: exangController,
-      dropdownData: ['Yes', 'No'],
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildOldpeakInputBox(BuildContext context) {
-    return buildTextInput(
-      context,
+    return TextInputWidget(
       title: 'ST depression induced by exercise relative to rest',
       controller: oldpeakController,
     );
   }
 
   Widget buildSlopeInputBox(BuildContext context) {
-    return buildTextInput(
-      context,
+    return TextInputWidget(
       title: 'The slope of the peak exercise ST segment',
       controller: slopeController,
     );
   }
 
   Widget buildCaInputBox(BuildContext context) {
-    return buildDropdownInput(
-      context,
+    return DropdownInputWidget(
       title: 'Number of major vessels colored by flourosopy',
       controller: caController,
-      dropdownData: ['0', '1', '2', '3'],
+      dropdownData: const ['0', '1', '2', '3'],
     );
   }
 
   Widget buildThalInputBox(BuildContext context) {
-    return buildDropdownInput(
-      context,
+    return DropdownInputWidget(
       title: 'Thalassemia',
       controller: thalController,
-      dropdownData: ['Normal', 'Fixed defect', 'Reversable defect'],
-    );
-  }
-
-  Widget buildTextInput(
-    BuildContext context, {
-    required String? title,
-    required TextEditingController? controller,
-  }) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: [
-                  Text(title!),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextField(
-                      controller: controller,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildDropdownInput(
-    BuildContext context, {
-    required String? title,
-    required DropdownEditingController<String>? controller,
-    required List<String>? dropdownData,
-  }) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: [
-                  Text(title!),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: dropdownData!,
-                      controller: controller,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+      dropdownData: const ['Normal', 'Fixed defect', 'Reversable defect'],
     );
   }
 

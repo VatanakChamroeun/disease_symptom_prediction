@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/api.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/model/predict_model.dart';
-import 'package:frontend/severity_list.dart';
 import 'package:frontend/screen/team_member_screen.dart';
+import 'package:frontend/widget/dropdown_input_widget.dart';
+import 'package:frontend/widget/error_snackbar_widget.dart';
+import 'package:frontend/widget/loading_widget.dart';
 
 class CovidPredictionScreen extends StatefulWidget {
   const CovidPredictionScreen({Key? key}) : super(key: key);
@@ -14,47 +16,47 @@ class CovidPredictionScreen extends StatefulWidget {
 }
 
 class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
-  DropdownEditingController<String> breathingProblemController =
-      DropdownEditingController();
-  DropdownEditingController<String> feverController =
-      DropdownEditingController();
-  DropdownEditingController<String> dryCoughController =
-      DropdownEditingController();
-  DropdownEditingController<String> soreThroatController =
-      DropdownEditingController();
-  DropdownEditingController<String> runningNoseController =
-      DropdownEditingController();
-  DropdownEditingController<String> asthmaController =
-      DropdownEditingController();
-  DropdownEditingController<String> chronicLungDiseaseController =
-      DropdownEditingController();
-  DropdownEditingController<String> headacheController =
-      DropdownEditingController();
-  DropdownEditingController<String> heartDiseaseController =
-      DropdownEditingController();
-  DropdownEditingController<String> diabetesController =
-      DropdownEditingController();
-  DropdownEditingController<String> hyperTensionController =
-      DropdownEditingController();
-  DropdownEditingController<String> fatigueController =
-      DropdownEditingController();
-  DropdownEditingController<String> gastrointestinalController =
-      DropdownEditingController();
-  DropdownEditingController<String> abroadTravelController =
-      DropdownEditingController();
-  DropdownEditingController<String> contactWithCovidPatientController =
-      DropdownEditingController();
-  DropdownEditingController<String> attendedLargeGatheringController =
-      DropdownEditingController();
-  DropdownEditingController<String> visitedPublicExposedPlacesController =
-      DropdownEditingController();
-  DropdownEditingController<String>
-      familyWorkingInPublicExposedPlacesController =
-      DropdownEditingController();
-  DropdownEditingController<String> wearingMasksController =
-      DropdownEditingController();
-  DropdownEditingController<String> sanitizationFromMarketController =
-      DropdownEditingController();
+  DropdownEditingController<String> breathingProblemController = DropdownEditingController();
+  DropdownEditingController<String> feverController = DropdownEditingController();
+  DropdownEditingController<String> dryCoughController = DropdownEditingController();
+  DropdownEditingController<String> soreThroatController = DropdownEditingController();
+  DropdownEditingController<String> runningNoseController = DropdownEditingController();
+  DropdownEditingController<String> asthmaController = DropdownEditingController();
+  DropdownEditingController<String> chronicLungDiseaseController = DropdownEditingController();
+  DropdownEditingController<String> headacheController = DropdownEditingController();
+  DropdownEditingController<String> heartDiseaseController = DropdownEditingController();
+  DropdownEditingController<String> diabetesController = DropdownEditingController();
+  DropdownEditingController<String> hyperTensionController = DropdownEditingController();
+  DropdownEditingController<String> fatigueController = DropdownEditingController();
+  DropdownEditingController<String> gastrointestinalController = DropdownEditingController();
+  DropdownEditingController<String> abroadTravelController = DropdownEditingController();
+  DropdownEditingController<String> contactWithCovidPatientController = DropdownEditingController();
+  DropdownEditingController<String> attendedLargeGatheringController = DropdownEditingController();
+  DropdownEditingController<String> visitedPublicExposedPlacesController = DropdownEditingController();
+  DropdownEditingController<String> familyWorkingInPublicExposedPlacesController = DropdownEditingController();
+  DropdownEditingController<String> wearingMasksController = DropdownEditingController();
+  DropdownEditingController<String> sanitizationFromMarketController = DropdownEditingController();
+
+  late String? breathProblem = breathingProblemController.value;
+  late String? fever = feverController.value;
+  late String? dryCough = dryCoughController.value;
+  late String? soreThroat = soreThroatController.value;
+  late String? runningNose = runningNoseController.value;
+  late String? asthma = asthmaController.value;
+  late String? chronicLungDisease = chronicLungDiseaseController.value;
+  late String? headache = headacheController.value;
+  late String? heartDisease = heartDiseaseController.value;
+  late String? diabetes = diabetesController.value;
+  late String? hyperTension = hyperTensionController.value;
+  late String? fatigue = fatigueController.value;
+  late String? gastrointestinal = gastrointestinalController.value;
+  late String? abroadTravel = abroadTravelController.value;
+  late String? contactWithCovidPatient = contactWithCovidPatientController.value;
+  late String? attendedLargeGathering = attendedLargeGatheringController.value;
+  late String? visitedPublicExposedPlaces = visitedPublicExposedPlacesController.value;
+  late String? familyWorkingInPublicExposedPlaces = familyWorkingInPublicExposedPlacesController.value;
+  late String? wearingMasks = wearingMasksController.value;
+  late String? sanitizationFromMarket = sanitizationFromMarketController.value;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,6 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
         child: Column(
           children: [
             buildInputSymptom(context),
-            // buildAddSymptomButton(context),
             buildBreathingProblemInputBox(context),
             buildFeverInputBox(context),
             buildDryCoughInputBox(context),
@@ -110,15 +111,6 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
     );
   }
 
-  Widget buildAddSymptomButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {});
-      },
-      child: const Text('Clear Data'),
-    );
-  }
-
   Widget buildInputSymptom(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,642 +121,162 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
   }
 
   Widget buildBreathingProblemInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Breathing Problem"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: breathingProblemController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Breathing Problem',
+      controller: breathingProblemController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildFeverInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Fever"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: feverController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Fever',
+      controller: feverController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildDryCoughInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Dry Cough"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: dryCoughController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Dry Cough',
+      controller: dryCoughController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildSoreThroatInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Sore Throat"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: soreThroatController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Sore Throat',
+      controller: soreThroatController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildRunningNoseInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Running Nose"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: runningNoseController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Running Nose',
+      controller: runningNoseController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildAsthmaInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Asthma"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: asthmaController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Asthma',
+      controller: asthmaController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildChronicInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Chronic Lung Disease"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: chronicLungDiseaseController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Chronic Lung Disease',
+      controller: chronicLungDiseaseController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildHeadacheInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Headache"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: headacheController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Headache',
+      controller: headacheController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildHeartDiseaseInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Heart Disease"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: heartDiseaseController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Heart Disease',
+      controller: heartDiseaseController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildDiabetesInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Diabetes"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: diabetesController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Diabetes',
+      controller: diabetesController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildHyperTensionInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Hyper Tension"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: hyperTensionController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Hyper Tension',
+      controller: hyperTensionController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildFatigueInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Fatigue"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: fatigueController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Fatigue',
+      controller: fatigueController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildGastrointestinalInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Gastrointestinal"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: gastrointestinalController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Gastrointestinal',
+      controller: gastrointestinalController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildAbroadTravelInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Travel Abroad"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: abroadTravelController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Travel Abroad',
+      controller: abroadTravelController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildContactWithPatientInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Contact with Covid 19 Patient"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: contactWithCovidPatientController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Contact with Covid 19 Patient',
+      controller: contactWithCovidPatientController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildAttendLargeGatheringInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Attended Large Gathering"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: attendedLargeGatheringController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Attended Large Gathering',
+      controller: attendedLargeGatheringController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildVisitPublicExposedPlacesInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Visit Public Exposed Places"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: visitedPublicExposedPlacesController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Visit Public Exposed Places',
+      controller: visitedPublicExposedPlacesController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildFamilyWorkingInPublicInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Family working in Public Exposed Places"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: familyWorkingInPublicExposedPlacesController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Family working in Public Exposed Places',
+      controller: familyWorkingInPublicExposedPlacesController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildWearingMaskInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Wearing Mask"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: wearingMasksController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Wearing Mask',
+      controller: wearingMasksController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
   Widget buildSaitizationFromMarketInputBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Column(
-                children: const [
-                  Text("Sanitization From Market"),
-                ],
-              ),
-              const SizedBox(width: 15),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 250,
-                    child: TextDropdownFormField(
-                      options: const ['Yes', 'No'],
-                      controller: sanitizationFromMarketController,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
+    return DropdownInputWidget(
+      title: 'Sanitization From Market',
+      controller: sanitizationFromMarketController,
+      dropdownData: const ['Yes', 'No'],
     );
   }
 
@@ -779,29 +291,7 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
           onPressed: () async {
             // await Api.get('severity');
             // showResult();
-            var breathProblem = breathingProblemController.value;
-            var fever = feverController.value;
-            var dryCough = dryCoughController.value;
-            var soreThroat = soreThroatController.value;
-            var runningNose = runningNoseController.value;
-            var asthma = asthmaController.value;
-            var chronicLungDisease = chronicLungDiseaseController.value;
-            var headache = headacheController.value;
-            var heartDisease = heartDiseaseController.value;
-            var diabetes = diabetesController.value;
-            var hyperTension = hyperTensionController.value;
-            var fatigue = fatigueController.value;
-            var gastrointestinal = gastrointestinalController.value;
-            var abroadTravel = abroadTravelController.value;
-            var contactWithCovidPatient =
-                contactWithCovidPatientController.value;
-            var attendedLargeGathering = attendedLargeGatheringController.value;
-            var visitedPublicExposedPlaces =
-                visitedPublicExposedPlacesController.value;
-            var familyWorkingInPublicExposedPlaces =
-                familyWorkingInPublicExposedPlacesController.value;
-            var wearingMasks = wearingMasksController.value;
-            var sanitizationFromMarket = sanitizationFromMarketController.value;
+
             if (breathProblem != null &&
                 fever != null &&
                 dryCough != null &&
@@ -824,11 +314,7 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
                 sanitizationFromMarket != null) {
               showResult();
             } else {
-              const snackBar = SnackBar(
-                content: Text("Please input all the value."),
-                backgroundColor: Colors.redAccent,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              ScaffoldMessenger.of(context).showSnackBar(errorSnackbar);
             }
           },
           child: const Text('Predict'),
@@ -846,8 +332,6 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: ElevatedButton(
           onPressed: () async {
-            // await Api.get('severity');
-
             showResult();
           },
           child: const Text('Predict Covid 19'),
@@ -857,27 +341,6 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
   }
 
   Future<PredictModel> postRequest() async {
-    var breathProblem = breathingProblemController.value;
-    var fever = feverController.value;
-    var dryCough = dryCoughController.value;
-    var soreThroat = soreThroatController.value;
-    var runningNose = runningNoseController.value;
-    var asthma = asthmaController.value;
-    var chronicLungDisease = chronicLungDiseaseController.value;
-    var headache = headacheController.value;
-    var heartDisease = heartDiseaseController.value;
-    var diabetes = diabetesController.value;
-    var hyperTension = hyperTensionController.value;
-    var fatigue = fatigueController.value;
-    var gastrointestinal = gastrointestinalController.value;
-    var abroadTravel = abroadTravelController.value;
-    var contactWithCovidPatient = contactWithCovidPatientController.value;
-    var attendedLargeGathering = attendedLargeGatheringController.value;
-    var visitedPublicExposedPlaces = visitedPublicExposedPlacesController.value;
-    var familyWorkingInPublicExposedPlaces =
-        familyWorkingInPublicExposedPlacesController.value;
-    var wearingMasks = wearingMasksController.value;
-    var sanitizationFromMarket = sanitizationFromMarketController.value;
     var data = {
       "Breathing Problem": breathProblem == 'Yes' ? 1 : 0,
       "Fever": fever == 'Yes' ? 1 : 0,
@@ -895,18 +358,12 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
       "Abroad travel": abroadTravel == 'Yes' ? 1 : 0,
       "Contact with COVID Patient": contactWithCovidPatient == 'Yes' ? 1 : 0,
       "Attended Large Gathering": attendedLargeGathering == 'Yes' ? 1 : 0,
-      "Visited Public Exposed Places":
-          visitedPublicExposedPlaces == 'Yes' ? 1 : 0,
-      "Family working in Public Exposed Places":
-          familyWorkingInPublicExposedPlaces == 'Yes' ? 1 : 0,
+      "Visited Public Exposed Places": visitedPublicExposedPlaces == 'Yes' ? 1 : 0,
+      "Family working in Public Exposed Places": familyWorkingInPublicExposedPlaces == 'Yes' ? 1 : 0,
       "Wearing Masks": wearingMasks == 'Yes' ? 1 : 0,
       "Sanitization from Market": sanitizationFromMarket == 'Yes' ? 1 : 0,
     };
     return await Api.postCovid('/api/predict', data);
-  }
-
-  Future getRequest() async {
-    return await Api.get('/api/severity');
   }
 
   void showResult({String? content}) {
@@ -945,16 +402,10 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
                 ],
               );
             }
-            return buildLoading();
+            return const LoadingWidget();
           },
         );
       },
-    );
-  }
-
-  Widget buildLoading() {
-    return const Center(
-      child: CircularProgressIndicator(),
     );
   }
 }
