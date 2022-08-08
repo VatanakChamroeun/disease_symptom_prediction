@@ -16,26 +16,47 @@ class CovidPredictionScreen extends StatefulWidget {
 }
 
 class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
-  DropdownEditingController<String> breathingProblemController = DropdownEditingController();
-  DropdownEditingController<String> feverController = DropdownEditingController();
-  DropdownEditingController<String> dryCoughController = DropdownEditingController();
-  DropdownEditingController<String> soreThroatController = DropdownEditingController();
-  DropdownEditingController<String> runningNoseController = DropdownEditingController();
-  DropdownEditingController<String> asthmaController = DropdownEditingController();
-  DropdownEditingController<String> chronicLungDiseaseController = DropdownEditingController();
-  DropdownEditingController<String> headacheController = DropdownEditingController();
-  DropdownEditingController<String> heartDiseaseController = DropdownEditingController();
-  DropdownEditingController<String> diabetesController = DropdownEditingController();
-  DropdownEditingController<String> hyperTensionController = DropdownEditingController();
-  DropdownEditingController<String> fatigueController = DropdownEditingController();
-  DropdownEditingController<String> gastrointestinalController = DropdownEditingController();
-  DropdownEditingController<String> abroadTravelController = DropdownEditingController();
-  DropdownEditingController<String> contactWithCovidPatientController = DropdownEditingController();
-  DropdownEditingController<String> attendedLargeGatheringController = DropdownEditingController();
-  DropdownEditingController<String> visitedPublicExposedPlacesController = DropdownEditingController();
-  DropdownEditingController<String> familyWorkingInPublicExposedPlacesController = DropdownEditingController();
-  DropdownEditingController<String> wearingMasksController = DropdownEditingController();
-  DropdownEditingController<String> sanitizationFromMarketController = DropdownEditingController();
+  DropdownEditingController<String> breathingProblemController =
+      DropdownEditingController();
+  DropdownEditingController<String> feverController =
+      DropdownEditingController();
+  DropdownEditingController<String> dryCoughController =
+      DropdownEditingController();
+  DropdownEditingController<String> soreThroatController =
+      DropdownEditingController();
+  DropdownEditingController<String> runningNoseController =
+      DropdownEditingController();
+  DropdownEditingController<String> asthmaController =
+      DropdownEditingController();
+  DropdownEditingController<String> chronicLungDiseaseController =
+      DropdownEditingController();
+  DropdownEditingController<String> headacheController =
+      DropdownEditingController();
+  DropdownEditingController<String> heartDiseaseController =
+      DropdownEditingController();
+  DropdownEditingController<String> diabetesController =
+      DropdownEditingController();
+  DropdownEditingController<String> hyperTensionController =
+      DropdownEditingController();
+  DropdownEditingController<String> fatigueController =
+      DropdownEditingController();
+  DropdownEditingController<String> gastrointestinalController =
+      DropdownEditingController();
+  DropdownEditingController<String> abroadTravelController =
+      DropdownEditingController();
+  DropdownEditingController<String> contactWithCovidPatientController =
+      DropdownEditingController();
+  DropdownEditingController<String> attendedLargeGatheringController =
+      DropdownEditingController();
+  DropdownEditingController<String> visitedPublicExposedPlacesController =
+      DropdownEditingController();
+  DropdownEditingController<String>
+      familyWorkingInPublicExposedPlacesController =
+      DropdownEditingController();
+  DropdownEditingController<String> wearingMasksController =
+      DropdownEditingController();
+  DropdownEditingController<String> sanitizationFromMarketController =
+      DropdownEditingController();
 
   late String? breathProblem = breathingProblemController.value;
   late String? fever = feverController.value;
@@ -51,10 +72,13 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
   late String? fatigue = fatigueController.value;
   late String? gastrointestinal = gastrointestinalController.value;
   late String? abroadTravel = abroadTravelController.value;
-  late String? contactWithCovidPatient = contactWithCovidPatientController.value;
+  late String? contactWithCovidPatient =
+      contactWithCovidPatientController.value;
   late String? attendedLargeGathering = attendedLargeGatheringController.value;
-  late String? visitedPublicExposedPlaces = visitedPublicExposedPlacesController.value;
-  late String? familyWorkingInPublicExposedPlaces = familyWorkingInPublicExposedPlacesController.value;
+  late String? visitedPublicExposedPlaces =
+      visitedPublicExposedPlacesController.value;
+  late String? familyWorkingInPublicExposedPlaces =
+      familyWorkingInPublicExposedPlacesController.value;
   late String? wearingMasks = wearingMasksController.value;
   late String? sanitizationFromMarket = sanitizationFromMarketController.value;
 
@@ -358,8 +382,10 @@ class _CovidPredictionScreenState extends State<CovidPredictionScreen> {
       "Abroad travel": abroadTravel == 'Yes' ? 1 : 0,
       "Contact with COVID Patient": contactWithCovidPatient == 'Yes' ? 1 : 0,
       "Attended Large Gathering": attendedLargeGathering == 'Yes' ? 1 : 0,
-      "Visited Public Exposed Places": visitedPublicExposedPlaces == 'Yes' ? 1 : 0,
-      "Family working in Public Exposed Places": familyWorkingInPublicExposedPlaces == 'Yes' ? 1 : 0,
+      "Visited Public Exposed Places":
+          visitedPublicExposedPlaces == 'Yes' ? 1 : 0,
+      "Family working in Public Exposed Places":
+          familyWorkingInPublicExposedPlaces == 'Yes' ? 1 : 0,
       "Wearing Masks": wearingMasks == 'Yes' ? 1 : 0,
       "Sanitization from Market": sanitizationFromMarket == 'Yes' ? 1 : 0,
     };
