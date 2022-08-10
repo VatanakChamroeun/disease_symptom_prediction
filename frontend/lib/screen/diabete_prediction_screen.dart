@@ -191,17 +191,17 @@ class _DiabetePredictionScreenState extends State<DiabetePredictionScreen> {
 
   Future<PredictModel> postRequest() async {
     var data = {
-      "age": age,
-      "pregnancies": pregnancies,
-      "glucose": glucose,
-      "bloodPressure": bloodPressure,
-      "skinThickness": skinThickness,
-      "insulin": insulin,
-      "bmi": bmi,
-      "diabetesPredigree": diabetesPredigree,
+      "Age": age,
+      "Pregnancies": pregnancies,
+      "Glucose": glucose,
+      "BloodPressure": bloodPressure,
+      "SkinThickness": skinThickness,
+      "Insulin": insulin,
+      "BMI": bmi,
+      "DiabetesPedigreeFunction": diabetesPredigree,
     };
 
-    return await Api.postHeartDisease('/api/predict', data);
+    return await Api.postDiabte('/api/predict', data);
   }
 
   void showResult() {
