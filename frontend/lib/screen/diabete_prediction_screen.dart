@@ -109,7 +109,7 @@ class _DiabetePredictionScreenState extends State<DiabetePredictionScreen> {
   Widget buildBloodPressureInputBox(BuildContext context) {
     return TextInputWidget(
       title: 'Blood Pressure',
-      controller: skinThicknessController,
+      controller: bloodPressureController,
     );
   }
 
