@@ -7,6 +7,7 @@ class Api {
   static String host = 'ml-term9-disease-prediction.herokuapp.com';
   static String hostHeartDisease = 'heart-disease-ml-term-9.herokuapp.com';
   static String hostCovid = 'covid-19-prediction-non.herokuapp.com';
+  static String hostDiabete = 'diabetes-prediction-term9.herokuapp.com';
 
   static Future<PredictModel> post(String path, Map body) async {
     http.Response response = await http.post(
@@ -60,6 +61,30 @@ class Api {
     http.Response response = await http.post(
       Uri(
         host: hostCovid,
+        path: path,
+        scheme: 'https',
+      ),
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE, HEAD',
+      },
+      body: jsonEncode(body),
+    );
+    var result = PredictModel.fromJson(jsonDecode(response.body));
+    // var result = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      return result;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  static Future<PredictModel> postDiabte(String path, Map body) async {
+    http.Response response = await http.post(
+      Uri(
+        host: hostDiabete,
         path: path,
         scheme: 'https',
       ),
